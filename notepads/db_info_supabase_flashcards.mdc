@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+---
+# Flashcards Database Schema Summary
+
+This schema is designed to support a flexible flashcard tool with hierarchical deck support. It normalizes data by separating primary entities from association (join) tables and uses custom enum types and JSON columns for extensibility.
+
+## Rationale
+
+- **Data Normalization & Flexibility:**  
+  Primary entities (cards, decks, media, tags) are stored separately. Association tables manage many-to-many relationships, avoiding data duplication.
+
+- **Extensibility:**  
+  Custom enum types (`card_type_enum`, `media_type_enum`) define allowed values, while JSON columns support future metadata and type-specific details.
+
+- **Hierarchical Deck Structure:**  
+  Decks can have an optional parent deck (via `parent_deck_id` in `fc_decks`), allowing decks to either stand alone or aggregate cards from child decks for review. This supports nested deck organization in the user interface.
+
+## Custom Enum Types
+
+- **card_type_enum:**  
+  Allowed flashcard types: `standard`, `cloze`, `typed`, `image_occlusion`.
+
+- **media_type_enum:**  
+  Allowed media types: `image`, `audio`, `video`.
+
+## Primary Tables
+
+- **fc_decks:**  
+  - **Purpose:** Stores flashcard decks.  
+  - **Key Columns:**  
+    - `id`: Unique identifier.  
+    - `user_id`: Owner (from Supabase Auth).  
+    - `parent_deck_id`: Optional reference for hierarchical deck structure.  
+    - `title`, `description`, `metadata`, `created_at`.
+
+- **fc_cards:**  
+  - **Purpose:** Stores individual flashcards.  
+  - **Key Columns:**  
+    - `id`: Unique card identifier.  
+    - `user_id`: Owner.  
+    - `card_type`: Specifies the flashcard type.  
+    - `front`, `back`: For standard cards.  
+    - `data`: Type-specific details (JSON).  
+    - `created_at`.
+
+- **fc_media:**  
+  - **Purpose:** Stores media assets (images, audio, video) used in flashcards.  
+  - **Key Columns:**  
+    - `id`: Unique media identifier.  
+    - `user_id`: Owner.  
+    - `media_type`: Type of media.  
+    - `url`: Storage location.  
+    - `metadata`, `created_at`.
+
+- **fc_tags:**  
+  - **Purpose:** Maintains a master list of tags for categorizing decks and cards.  
+  - **Key Columns:**  
+    - `id`: Unique tag identifier.  
+    - `user_id`: Owner.  
+    - `name`: Tag name (unique per user).
+
+## Association (Link) Tables
+
+- **fc_link_cards_decks:**  
+  - **Purpose:** Creates a many-to-many relationship between flashcards and decks.  
+  - **Key Columns:** `card_id`, `deck_id`.
+
+- **fc_link_cards_tags:**  
+  - **Purpose:** Links flashcards with tags, allowing multiple tags per card.  
+  - **Key Columns:** `card_id`, `tag_id`.
+
+- **fc_link_decks_tags:**  
+  - **Purpose:** Links decks with tags, allowing multiple tags per deck.  
+  - **Key Columns:** `deck_id`, `tag_id`.
+
+- **fc_link_cards_media:**  
+  - **Purpose:** Links flashcards with media assets, enabling a card to reference multiple media items.  
+  - **Key Columns:** `card_id`, `media_id`.
+
+This schema structure ensures a clear separation of concerns, supporting both simple and hierarchical deck structures, and allows flexible associations across flashcards, decks, media, and tags.

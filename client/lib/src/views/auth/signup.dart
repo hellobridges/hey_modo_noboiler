@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'auth_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/auth_provider.dart';
 import 'login.dart';
 
 /// Signup screen for user registration.
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -34,7 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
       });
 
       try {
-        final success = await AuthService().signUp(
+        final authService = ref.read(authServiceProvider);
+        final success = await authService.signUp(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );

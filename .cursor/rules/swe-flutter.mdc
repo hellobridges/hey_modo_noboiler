@@ -1,6 +1,6 @@
 ---
 description: 
-globs: *.dart$, client/**
+globs: *.dart$, client/**, *.dart
 ---
 ---
 description: Flutter best practices

@@ -1,6 +1,6 @@
 ---
 description: Django best practices
-globs: server/*
+globs: *.py, server/*
 ---
 ---
 description: Django best practices

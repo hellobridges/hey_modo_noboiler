@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'auth_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/auth_provider.dart';
 import 'signup.dart';
 import '../main_screen.dart';
 
 /// Login screen for user authentication.
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -33,12 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try {
-        final success = await AuthService().signIn(
+        final authService = ref.read(authServiceProvider);
+        final success = await authService.signIn(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
 
         if (success) {
+          // Update the auth state
+          ref.read(authStateProvider.notifier).state = true;
+          
           if (mounted) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -65,6 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen to auth state changes
+    ref.watch(authStateListenerProvider);
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),

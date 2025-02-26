@@ -1,0 +1,95 @@
+---
+description: Supabase query compatibility
+globs: **/services/*.dart, **/repositories/*.dart, **/data_sources/*.dart
+---
+---
+description: Supabase query compatibility in Flutter
+globs: **/services/*.dart, **/repositories/*.dart, **/data_sources/*.dart
+---
+
+# Supabase Query Compatibility
+
+Guidelines for writing compatible Supabase queries in Flutter applications.
+
+<rule>
+name: supabase-query-compatibility
+description: Ensures Supabase queries are compatible across different client versions
+
+filters:
+  # Match Dart files in service, repository, or data source layers
+  - type: file_extension
+    pattern: "\\.dart$"
+  # Match files in specific directories
+  - type: file_path
+    pattern: "(services|repositories|data_sources)"
+  # Match content that contains Supabase client usage
+  - type: content
+    pattern: "(supabase|Supabase).*\\.from\\(.*\\)\\.select\\(\\)"
+
+actions:
+  - type: suggest
+    message: |
+      # Supabase Query Compatibility Guidelines
+
+      ## Query Method Compatibility
+      - **Avoid specialized filter methods** like `is_()` or `isNull()` that may not be available in all Postgrest client versions
+      - **Prefer client-side filtering** for simple conditions:
+        ```dart
+        // Instead of:
+        final response = await supabaseClient
+            .from('table')
+            .select()
+            .isNull('field');
+            
+        // Prefer:
+        final response = await supabaseClient
+            .from('table')
+            .select();
+        final filtered = response
+            .where((item) => item['field'] == null)
+            .toList();
+        ```
+      
+      ## Error Handling
+      - **Always include try/catch blocks** around Supabase queries
+      - **Log detailed error information** for debugging
+      - **Provide user-friendly error messages** in the UI
+      - **Use SelectableText.rich with red color** for displaying errors
+      
+      ## Performance Considerations
+      - **Be mindful of client-side filtering impact** on large datasets
+      - **Use pagination** when fetching large result sets
+      - **Consider caching strategies** for frequently accessed data
+      - **Monitor and log query performance** in production
+
+      ## Testing
+      - **Test queries on Android first** following the Android-first testing approach
+      - **Verify compatibility across different Supabase client versions**
+      - **Create mock responses** for testing error scenarios
+
+examples:
+  - input: |
+      // Potentially incompatible query
+      final response = await supabaseClient
+          .from('fc_decks')
+          .select()
+          .eq('user_id', userId)
+          .isNull('parent_deck_id');
+    output: "Use client-side filtering for better compatibility"
+
+  - input: |
+      // Compatible approach
+      final response = await supabaseClient
+          .from('fc_decks')
+          .select()
+          .eq('user_id', userId);
+          
+      final rootDecks = response
+          .where((deck) => deck['parent_deck_id'] == null)
+          .toList();
+    output: "Good: Uses client-side filtering for better compatibility"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

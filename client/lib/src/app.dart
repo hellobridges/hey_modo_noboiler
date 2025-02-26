@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'views/main_screen.dart';
 import 'views/auth/login.dart';
-import 'views/auth/auth_service.dart';
+import 'providers/auth_provider.dart';
 
 /// The root widget of the application.
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isAuthenticated = ref.watch(authStateProvider);
+    
     return MaterialApp(
       title: 'Hey Modo',
       debugShowCheckedModeBanner: false,
@@ -24,7 +27,7 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: AuthService().isAuthenticated ? const MainScreen() : const LoginScreen(),
+      home: isAuthenticated ? const MainScreen() : const LoginScreen(),
     );
   }
 } 

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'tabs/learn/learn_tab.dart';
 import 'tabs/build/build_tab.dart';
 import 'tabs/explore/explore_tab.dart';
 import 'tabs/social/social_tab.dart';
-import 'auth/auth_service.dart';
 import 'auth/login.dart';
+import '../providers/auth_provider.dart';
 
 /// The main screen of the application with bottom navigation.
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = const [
@@ -26,7 +27,9 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _signOut() async {
     try {
-      await AuthService().signOut();
+      final authService = ref.read(authServiceProvider);
+      await authService.signOut();
+      
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -44,6 +47,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen to auth state changes
+    ref.watch(authStateListenerProvider);
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hey Modo'),
