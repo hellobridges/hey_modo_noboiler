@@ -1,8 +1,4 @@
 ---
-description: Testing best practices
-globs: test/**
----
----
 description: Application Testing Strategy
 globs: test/**
 ---
@@ -101,4 +97,4 @@ examples:
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 
