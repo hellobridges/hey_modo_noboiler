@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'views/main_screen.dart';
+import 'views/auth/login.dart';
+import 'views/auth/auth_service.dart';
 
 /// The root widget of the application.
 class App extends StatelessWidget {
@@ -22,7 +24,7 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const MainScreen(),
+      home: AuthService().isAuthenticated ? const MainScreen() : const LoginScreen(),
     );
   }
 } 

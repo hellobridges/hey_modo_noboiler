@@ -3,6 +3,8 @@ import 'tabs/learn/learn_tab.dart';
 import 'tabs/build/build_tab.dart';
 import 'tabs/explore/explore_tab.dart';
 import 'tabs/social/social_tab.dart';
+import 'auth/auth_service.dart';
+import 'auth/login.dart';
 
 /// The main screen of the application with bottom navigation.
 class MainScreen extends StatefulWidget {
@@ -22,9 +24,37 @@ class _MainScreenState extends State<MainScreen> {
     SocialTab(),
   ];
 
+  Future<void> _signOut() async {
+    try {
+      await AuthService().signOut();
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error signing out: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Hey Modo'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _signOut,
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
       body: IndexedStack(
         index: _currentIndex,
         children: _tabs,
