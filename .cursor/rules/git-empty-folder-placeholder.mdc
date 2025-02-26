@@ -1,0 +1,38 @@
+---
+description: 
+globs: *
+---
+---
+description: Git Empty Folder Placeholder
+globs: *
+---
+
+# Git empty folder placeholder
+
+Ensures empty folders created by AI have placeholder files to make them visible in Git.
+
+<rule>
+name: git-empty-folder-placeholder
+description: Ensures empty folders created by AI have placeholder files for Git visibility
+filters:
+  # Match directory creation events
+  - type: event
+    pattern: "directory_create"
+  # Match AI-generated content
+  - type: source
+    pattern: "ai_generated"
+
+actions:
+  - type: suggest
+    message: |
+      Add a placeholder file to empty directories for Git tracking:
+      
+      - `.gitkeep`: `New-Item -Path "[directory_path]/.gitkeep" -ItemType File -Force`
+      - README.md: `Set-Content -Path "[directory_path]/README.md" -Value "# Purpose of this directory"`
+      
+      Git doesn't track empty directories by default.
+
+metadata:
+  priority: medium
+  version: 1.0
+</rule>
