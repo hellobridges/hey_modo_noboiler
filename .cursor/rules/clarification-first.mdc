@@ -1,8 +1,4 @@
 ---
-description: Ask for clarification
-globs: *
----
- ---
 description: Ask clarifying questions when instructions are unclear
 globs: *
 ---
@@ -41,7 +37,18 @@ actions:
       - Spatial or visual instructions (e.g., "move this up a bit")
       - Any instruction where you're not 100% certain of the intent
 
+examples:
+  - input: |
+      # Unclear instruction
+      "Make the navigation bar more compact"
+      
+      # Proper response
+      "I'm not sure if you want to reduce the vertical height of the navigation bar, 
+      decrease the horizontal spacing between items, or make the text smaller. 
+      Could you please clarify which aspect of the navigation bar you'd like to compact?"
+    output: "Asking for clarification before making changes"
+
 metadata:
   priority: high
   version: 1.0
-</rule>
+</rule> 
