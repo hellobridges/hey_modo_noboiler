@@ -278,4 +278,57 @@ class FlashcardService {
       rethrow;
     }
   }
+  
+  /// Update an existing deck
+  Future<Deck> updateDeck({
+    required String deckId,
+    required String title,
+    required String description,
+    required Map<String, dynamic> metadata,
+    String? parentDeckId,
+  }) async {
+    try {
+      final userId = _supabaseService.currentUser?.id;
+      if (userId == null) {
+        throw Exception('User not authenticated');
+      }
+
+      debugPrint('Updating deck: $deckId for user: $userId');
+      
+      final deckData = {
+        'title': title,
+        'description': description,
+        'metadata': metadata,
+        'parent_deck_id': parentDeckId,
+      };
+      
+      final response = await _supabaseService.client
+          .from('fc_decks')
+          .update(deckData)
+          .eq('id', deckId)
+          .eq('user_id', userId) // Ensure the user owns the deck
+          .select()
+          .single();
+          
+      debugPrint('Successfully updated deck: ${response['id']}');
+
+      // Convert the response to a Deck object
+      final Map<String, dynamic> safeJson = {
+        'id': response['id'],
+        'userId': response['user_id'],
+        'title': response['title'] ?? '',
+        'description': response['description'] ?? '',
+        'created_at': response['created_at'],
+        'metadata': response['metadata'] ?? {},
+        'parent_deck_id': response['parent_deck_id'],
+        'cardIds': [],
+        'tagIds': [],
+      };
+      
+      return Deck.fromJson(safeJson);
+    } catch (e) {
+      debugPrint('Error updating deck: $e');
+      rethrow;
+    }
+  }
 } 

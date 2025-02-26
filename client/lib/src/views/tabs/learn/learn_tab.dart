@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:ui';
 import '../../../models/deck.dart';
 import '../../../providers/flashcard_providers.dart';
+import '../../../widgets/user_settings_menu.dart';
 
 /// The Learn tab of the application.
 class LearnTab extends ConsumerWidget {
@@ -9,17 +11,15 @@ class LearnTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final decksAsync = ref.watch(userDecksProvider);
+    final decksAsync = ref.watch(rootDecksProvider);
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learn'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => ref.refresh(userDecksProvider),
-            tooltip: 'Refresh',
-          ),
+        title: const Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: const [
+          UserSettingsMenu(),
         ],
       ),
       body: decksAsync.when(
@@ -57,30 +57,44 @@ class LearnTab extends ConsumerWidget {
     }
 
     return RefreshIndicator(
-      onRefresh: () async => ref.refresh(userDecksProvider),
+      onRefresh: () async => ref.refresh(rootDecksProvider),
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: decks.length,
         itemBuilder: (context, index) {
           final deck = decks[index];
-          return Card(
-            margin: const EdgeInsets.only(bottom: 16),
-            child: ListTile(
-              title: Text(deck.title),
-              subtitle: Text(
-                deck.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: Text(
-                '${deck.cardIds.length} cards',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              onTap: () {
-                // TODO: Navigate to deck detail screen
-              },
-            ),
-          );
+          return _buildDeckItem(context, deck);
+        },
+      ),
+    );
+  }
+  
+  Widget _buildDeckItem(BuildContext context, Deck deck) {
+    // Extract icon and color from metadata
+    final iconData = deck.metadata.containsKey('icon')
+        ? IconData(
+            deck.metadata['icon'] as int,
+            fontFamily: deck.metadata['icon_font_family'] as String? ?? 'MaterialIcons',
+          )
+        : Icons.folder;
+    
+    final color = deck.metadata.containsKey('color')
+        ? Color(deck.metadata['color'] as int)
+        : Colors.blue;
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: ListTile(
+        leading: Icon(iconData, color: color),
+        title: Text(deck.title),
+        subtitle: Text(
+          deck.description,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios),
+        onTap: () {
+          // TODO: Navigate to deck detail screen
         },
       ),
     );
@@ -106,15 +120,23 @@ class LearnTab extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: SelectableText.rich(
               TextSpan(
-                text: error.toString(),
-                style: const TextStyle(color: Colors.red),
+                children: [
+                  TextSpan(
+                    text: 'Error details:\n',
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                  TextSpan(
+                    text: error.toString(),
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
               ),
               textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () => ref.refresh(userDecksProvider),
+            onPressed: () => ref.refresh(rootDecksProvider),
             child: const Text('Try Again'),
           ),
         ],

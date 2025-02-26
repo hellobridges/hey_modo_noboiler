@@ -1,10 +1,10 @@
 ---
 description: Test Android by default
-globs: *.dart, test/**
+globs: *.dart, test/**, *.md, *.sh, *.ps1, *.bat
 ---
 ---
 description: Test Android by default
-globs: *.dart, test/**
+globs: *.dart, test/**, *.md, *.sh, *.ps1, *.bat
 ---
 
 
@@ -20,9 +20,9 @@ filters:
   # Match Flutter files
   - type: file_extension
     pattern: "\\.dart$"
-  # Match Flutter run commands
+  # Match Flutter run commands that don't specify Android
   - type: content
-    pattern: "flutter run"
+    pattern: "flutter run(?!.*-d android)"
 
 actions:
   - type: suggest

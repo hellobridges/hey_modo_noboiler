@@ -3,11 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:ui';
 import '../../../models/deck.dart';
 import '../../../providers/flashcard_providers.dart';
+import '../../../widgets/user_settings_menu.dart';
 import 'create_deck_screen.dart';
+import 'edit_deck_screen.dart';
 
 /// The Build tab of the application.
 class BuildTab extends ConsumerWidget {
   const BuildTab({super.key});
+
+  /// Refreshes all deck-related providers
+  void _refreshAllDecks(WidgetRef ref, List<Deck> rootDecks) {
+    // Refresh root decks
+    ref.refresh(rootDecksProvider);
+    
+    // Refresh user decks
+    ref.refresh(userDecksProvider);
+    
+    // Refresh child decks for each root deck
+    for (final deck in rootDecks) {
+      ref.refresh(childDecksProvider(deck.id));
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,13 +31,11 @@ class BuildTab extends ConsumerWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Build'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => ref.refresh(rootDecksProvider),
-            tooltip: 'Refresh',
-          ),
+        title: const Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: const [
+          UserSettingsMenu(),
         ],
       ),
       body: rootDecksAsync.when(
@@ -70,7 +84,9 @@ class BuildTab extends ConsumerWidget {
     }
 
     return RefreshIndicator(
-      onRefresh: () async => ref.refresh(rootDecksProvider),
+      onRefresh: () async {
+        _refreshAllDecks(ref, decks);
+      },
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: decks.length,
@@ -105,6 +121,25 @@ class BuildTab extends ConsumerWidget {
           overflow: TextOverflow.ellipsis,
         ),
         leading: Icon(iconData, color: color),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Edit button
+            IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: 'Edit Deck',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditDeckScreen(deck: deck),
+                  ),
+                );
+              },
+            ),
+            // Dropdown icon (part of ExpansionTile)
+            const Icon(Icons.expand_more),
+          ],
+        ),
         children: [
           _buildChildDecks(context, deck.id, ref),
         ],
@@ -155,37 +190,27 @@ class BuildTab extends ConsumerWidget {
         children: [
           const Icon(
             Icons.error_outline,
-            color: Colors.red,
             size: 60,
+            color: Colors.red,
           ),
           const SizedBox(height: 16),
           Text(
-            'Error loading decks',
+            'Error Loading Decks',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: SelectableText.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Error details:\n',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                  ),
-                  TextSpan(
-                    text: error.toString(),
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ],
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Text(
+              error.toString(),
               textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red),
             ),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => ref.refresh(rootDecksProvider),
-            child: const Text('Try Again'),
+            child: const Text('Retry'),
           ),
         ],
       ),

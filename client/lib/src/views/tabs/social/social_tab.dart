@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../widgets/user_settings_menu.dart';
 
 /// The Social tab of the application.
 class SocialTab extends StatelessWidget {
@@ -8,7 +9,12 @@ class SocialTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Social'),
+        title: const Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: const [
+          UserSettingsMenu(),
+        ],
       ),
       body: const Center(
         child: Text(

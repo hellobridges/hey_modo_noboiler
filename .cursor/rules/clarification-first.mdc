@@ -1,0 +1,47 @@
+---
+description: Ask for clarification
+globs: *
+---
+ ---
+description: Ask clarifying questions when instructions are unclear
+globs: *
+---
+
+# Clarification First Approach
+
+When instructions are unclear or ambiguous, always ask for clarification before proceeding.
+
+<rule>
+name: clarification-first
+description: Requires asking clarifying questions when instructions are unclear or ambiguous
+
+filters:
+  # Match any file
+  - type: path
+    pattern: ".*"
+  # Match any AI response
+  - type: event
+    pattern: "ai_response"
+
+actions:
+  - type: suggest
+    message: |
+      When faced with unclear or ambiguous instructions:
+      
+      1. STOP work immediately
+      2. Do NOT make assumptions about what the user wants
+      3. Ask a specific clarifying question about the ambiguous part
+      4. Wait for the user's response before proceeding
+      5. Only implement changes after receiving clear direction
+      
+      This applies especially to:
+      - Instructions with multiple possible interpretations
+      - Requests that could be implemented in different ways
+      - Vague terms like "improve", "fix", or "make better"
+      - Spatial or visual instructions (e.g., "move this up a bit")
+      - Any instruction where you're not 100% certain of the intent
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>
