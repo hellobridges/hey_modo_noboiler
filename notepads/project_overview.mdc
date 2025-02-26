@@ -1,0 +1,80 @@
+---
+description: Project Overview
+globs: 
+---
+# Basic Multi-Platform App Specification
+
+## Overview
+
+Develop a cross-platform application compatible with Android, iOS, and Web using **Flutter** for the frontend, **Supabase** for backend services (authentication and database), and **Django** for additional backend functionalities. The initial version will allow users to open the app, create an account, log in, and log out. The app features a bottom navigation bar with four tabs: Learn, Build, Explore, and Social. Future enhancements include user learning modules, AI integration, chat functionality, social networking, and leaderboards.
+
+## Functional Requirements
+
+1. **User Authentication**
+   - **Sign Up**: Users can create an account using email and password.
+   - **Log In**: Users can authenticate using their credentials.
+   - **Log Out**: Users can securely log out of their accounts.
+   - **Authentication Flow**: Implement secure authentication flows using **Supabase Auth**, ensuring encrypted data transmission.
+
+2. **Navigation**
+   - **Bottom Navigation Bar**: Contains four tabs:
+     - **Learn**
+     - **Build**
+     - **Explore**
+     - **Social**
+
+## Technology Stack
+
+- **Frontend**: Flutter
+- **Backend Services**: Supabase
+- **Additional Backend**: Django
+- **Database**: Supabase PostgreSQL
+- **Authentication**: Supabase Auth
+
+## Architectural Overview
+
+- **Client-Server Architecture**: 
+  - **Flutter App**: Handles the user interface and interacts with backend services.
+  - **Supabase**: Manages authentication, real-time database, and storage.
+  - **Django**: Handles additional server-side logic, APIs, and integrations.
+  - **State Management**: Utilize **Riverpod** for state management to manage app state across multiple platforms.
+- **API Integration**: Flutter communicates with Supabase and Django via RESTful APIs and WebSockets where necessary.
+- **State Management**: Utilize a state management solution (e.g., Provider or Bloc) to manage app state across multiple platforms.
+
+## Organizational Architecture
+
+- **Separation of Concerns**: Clearly divide the codebase by responsibility.
+- **Modularity**: Encapsulate features within modules or packages to facilitate independent development and testing.
+- **Scalability**: Design the architecture to accommodate future features like AI integration, chat, and social networking without significant refactoring.
+
+## Coding Conventions
+
+- **Consistency**: Follow Dart and Python best practices for coding style and conventions.
+- **Naming Conventions**:
+  - **Dart**: Use `camelCase` for variables and functions, `PascalCase` for classes.
+  - **Python**: Use `snake_case` for variables and functions, `PascalCase` for classes.
+- **Documentation**: Provide clear documentation and comments for functions, classes, and modules.
+- **Version Control**: Use Git with a clear commit history and meaningful commit messages.
+- **Linting and Formatting**: Enforce code quality using Dart's `flutter analyze` and Python's `flake8` or similar tools.
+
+## File Structure and Organizational Principles
+
+- **Scalable Directory Layout**: Organize files hierarchically to manage complexity as the project grows.
+- **Feature-Based Organization**: Group related files by feature rather than by type to enhance modularity.
+- **Reusable Components**: Develop reusable widgets and services to minimize code duplication.
+- **Environment Configuration**: Manage environment-specific settings separately for development, testing, and production.
+
+## Additional Specifications
+
+- **Authentication Flow**: Implement secure authentication flows using Supabase Auth, ensuring encrypted data transmission.
+- **Responsive Design**: Ensure the Flutter UI adapts seamlessly across Android, iOS, and Web platforms.
+- **State Management**: Choose a robust state management approach to handle user state, navigation, and data consistency.
+- **Error Handling**: Implement comprehensive error handling and user feedback mechanisms.
+- **Testing**: Write unit and integration tests to ensure code reliability and facilitate future changes.
+- **Continuous Integration**: Set up CI/CD pipelines to automate testing and deployment processes.
+- **Security**: Adhere to security best practices to protect user data and prevent vulnerabilities.
+
+## Conclusion
+
+This specification outlines the foundational structure and architectural principles for developing a multi-platform app using Flutter, Supabase, and Django. By adhering to these guidelines, the development team can ensure a clean, maintainable, and scalable codebase poised for future feature expansions.
+

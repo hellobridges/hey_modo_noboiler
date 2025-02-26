@@ -1,0 +1,606 @@
+---
+description: Spec - Initial App Setup
+globs: 
+---
+# Step-by-Step Setup for Basic Multi-Platform App
+
+## Step 1: Initialize the Flutter Project
+
+### Key Requirements
+
+- Set up the Flutter environment.
+- Create a new Flutter project configured for Android, iOS, and Web.
+- Organize the initial file structure.
+
+### Frameworks & Tools
+
+- **Flutter SDK**
+- **Dart**
+
+### Folder/File Locations
+
+```bash
+client/
+├── android/
+├── ios/
+├── lib/
+│   ├── main.dart
+│   └── src/
+│       ├── models/
+│       ├── services/
+│       ├── views/
+│       │   ├── tabs/
+│       │   │   ├── learn/
+│       │   │   ├── build/
+│       │   │   ├── explore/
+│       │   │   └── social/
+│       ├── widgets/
+│       └── utils/
+├── web/
+├── assets/
+├── pubspec.yaml
+└── test/
+
+```
+
+### Instructions
+
+1. **Install Flutter**: Ensure Flutter SDK is installed and configured.
+2. **Create Project**:
+   ```bash
+   flutter create client
+   ```[](mdc:https:/supabase.com)
+3. **Navigate to Project**:
+   ```bash
+   cd client
+   ```
+4. **Set Up Folder Structure**: Organize `lib/src/` as shown above.
+
+### Tests to Write
+
+- **Test**: Verify the app runs on all platforms (Android, iOS, Web).
+- **Result**: The default Flutter counter app displays correctly on each platform.
+
+### Considerations
+
+- Ensure `pubspec.yaml` includes necessary dependencies.
+- Configure platform-specific settings as needed.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+---
+
+## Step 2: Set Up Supabase Backend
+
+
+### Key Requirements
+- Initialize Supabase project.
+- Configure authentication and database.
+
+### Frameworks & Tools
+
+- **Supabase**
+- **PostgreSQL**
+
+### Folder/File Locations
+
+- Backend configuration is managed externally on Supabase dashboard.
+- In Flutter:
+  ```bash
+  lib/
+  └── src/
+      └── services/
+          └── supabase_service.dart
+  ```
+
+### Instructions
+
+Ask Supabase admin user to assist you with process and provide relevant .env files. Ask questions as necessary to help them verify the Supabase matches the below specification.
+
+1. **Create Supabase Account**: Sign up at @Supabase.
+2. **Create New Project**: Set up a new project with PostgreSQL.
+3. **Configure Auth**: Enable email/password authentication.
+4. **Get API Keys**: Note the `URL` and `anon key` for integration.
+5. **Add Supabase Package**:
+   ```yaml
+   dependencies:
+     supabase_flutter: ^0.2.8
+   ```
+6. **Initialize Supabase in Flutter**:
+   - Create `supabase_service.dart` with initialization code.
+
+### Tests to Write
+
+- **Test**: Successful connection to Supabase.
+- **Result**: App initializes without errors and can fetch basic data.
+
+### Considerations
+
+- Securely store API keys using environment variables or secure storage.
+- Plan database schema for user accounts.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 3: Implement User Authentication
+
+### Key Requirements
+
+- Enable user sign up, log in, and log out functionalities.
+- Integrate authentication with Supabase.
+
+### Frameworks & Tools
+
+- **Supabase Auth**
+- **Flutter Widgets**
+
+### Folder/File Locations
+
+```bash
+lib/
+└── src/
+    ├── services/
+    │   └── supabase_service.dart
+    └── views/
+        └── auth/
+            ├── login.dart
+            ├── signup.dart
+            └── auth_service.dart
+
+```
+
+### Instructions
+
+1. **Create Authentication Screens**:
+   - `login.dart`: Form for user login.
+   - `signup.dart`: Form for user registration.
+2. **Develop Auth Service**:
+   - Implement methods for sign up, log in, and log out using Supabase SDK.
+3. **Navigation**:
+   - Route between authentication screens and main app upon successful login.
+
+### Tests to Write
+
+- **Test**: User can sign up with valid credentials.
+- **Result**: New user is created in Supabase and can log in.
+
+- **Test**: User can log in with correct credentials.
+- **Result**: User is authenticated and navigated to the main screen.
+
+- **Test**: User can log out successfully.
+- **Result**: User session is terminated and redirected to login screen.
+
+### Considerations
+
+- Validate user input on forms.
+- Handle authentication errors gracefully.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 4: Create Bottom Navigation Bar with Tabs
+
+### Key Requirements
+
+- Implement a bottom navigation bar with four tabs: Learn, Build, Explore, Social.
+- Each tab displays an empty placeholder screen.
+
+
+### Frameworks & Tools
+
+- **Flutter Widgets**
+
+### Folder/File Locations
+
+```bash
+lib/
+└── src/
+    └── views/
+        └── main_screen.dart
+        └── tabs/
+            ├── learn/
+            │   └── learn_tab.dart
+            ├── build/
+            │   └── build_tab.dart
+            ├── explore/
+            │   └── explore_tab.dart
+            └── social/
+                └── social_tab.dart
+```
+
+### Instructions
+
+1. **Main Screen** (`main_screen.dart`):
+   - Implement `BottomNavigationBar` with four items.
+   - Use `IndexedStack` or `PageView` to manage tab switching.
+
+2. **Create Placeholder Tabs**:
+   - Each `*_tab.dart` file contains a simple `Scaffold` with a centered text indicating the tab name.
+
+### Tests to Write
+
+- **Test**: Navigation bar displays all four tabs.
+- **Result**: Tabs Learn, Build, Explore, Social are visible.
+- **Test**: Tapping each tab displays the corresponding placeholder screen.
+- **Result**: Correct screen is displayed for each tab.
+
+### Considerations
+
+- Use consistent icons and labels for each tab.
+- Ensure state is maintained when switching tabs.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 5: Integrate Django Backend for Additional Functionalities
+
+### Key Requirements
+
+- Set up Django project for handling additional server-side logic.
+- Prepare APIs for future features.
+
+### Frameworks & Tools
+
+- **Django**
+- **Django REST Framework**
+
+### Folder/File Locations
+
+```bash
+modo_serverside/
+├── manage.py
+├── modo_serverside/
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── app1/
+│   ├── models.py
+│   ├── views.py
+│   ├── serializers.py
+│   ├── urls.py
+│   └── tests.py
+└── requirements.txt
+```
+
+### Instructions
+
+1. **Set Up Django Project**:
+   ```bash
+   django-admin startproject modo_serverside
+   cd modo_serverside
+   python manage.py startapp app1
+   ```
+2. **Install Dependencies**:
+   - Add `djangorestframework` to `requirements.txt` and install.
+3. **Configure Settings**:
+   - Add `app1` and `rest_framework` to `INSTALLED_APPS` in `settings.py`.
+4. **Create Basic API Endpoints**:
+   - Define simple API views to confirm the setup.
+5. **Configure URLs**:
+   - Route URLs in `modo_serverside/urls.py` and `app1/urls.py`.
+
+### Tests to Write
+
+- **Test**: Django server starts without errors.
+- **Result**: Server runs and default Django page is accessible.
+- **Test**: API endpoint returns expected response.
+- **Result**: API responds with a success status and correct data.
+
+### Considerations
+
+- Ensure CORS is configured to allow requests from the Flutter app.
+- Plan for authentication tokens between Flutter and Django.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 6: Connect Flutter App with Django APIs
+
+### Key Requirements
+
+- Establish communication between Flutter frontend and Django backend.
+- Ensure secure data exchange.
+
+### Frameworks & Tools
+
+- **HTTP Package** (Flutter)
+- **Django REST Framework**
+
+### Folder/File Locations
+
+```bash
+lib/
+└── src/
+    └── services/
+        ├── supabase_service.dart
+        └── django_service.dart
+```
+
+### Instructions
+
+1. **Add HTTP Package**:
+   ```yaml
+   dependencies:
+     http: ^0.13.4
+   ```
+2. **Develop Django Service** (`django_service.dart`):
+   - Implement methods to call Django API endpoints.
+3. **Secure Communication**:
+   - Use HTTPS for all API calls.
+   - Implement authentication headers if necessary.
+
+### Tests to Write
+
+- **Test**: Flutter app can successfully call a Django API endpoint.
+- **Result**: API returns the expected data without errors.
+- **Test**: Handle API errors gracefully in Flutter.
+- **Result**: App displays error messages or fallback options when API calls fail.
+
+### Considerations
+
+- Manage API URLs and keys securely.
+- Handle network exceptions and retries.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+
+
+## Step 7: Implement State Management
+
+### Key Requirements
+
+- Manage app state across multiple platforms.
+- Choose and set up a state management solution.
+
+### Frameworks & Tools
+
+- **Provider** or **Bloc**
+
+### Folder/File Locations
+
+```bash
+lib/
+└── src/
+    └── state/
+        ├── app_state.dart
+        └── providers.dart
+```
+
+### Instructions
+
+1. **Choose State Management**: Select **Provider** for simplicity.
+2. **Add Provider Package**:
+   ```yaml
+   dependencies:
+     provider: ^6.0.0
+   ```
+3. **Set Up Providers** (`providers.dart`):
+   - Define providers for authentication and navigation state.
+4. **Wrap Main App with Providers**:
+   - Initialize providers in `main.dart`.
+
+### Tests to Write
+
+- **Test**: State updates correctly upon user actions (e.g., login).
+- **Result**: UI reflects the current state accurately.
+- **Test**: State persists across app sessions if required.
+- **Result**: User remains logged in after restarting the app.
+
+### Considerations
+
+- Ensure state is efficiently managed to prevent unnecessary rebuilds.
+- Plan for scalability as features grow.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 8: Add Basic UI Components and Navigation
+
+### Key Requirements
+
+- Create user-friendly UI for authentication and main navigation.
+- Ensure responsive design across platforms.
+
+### Frameworks & Tools
+
+- **Flutter Widgets**
+
+### Folder/File Locations
+
+```bash
+lib/
+└── src/
+    ├── views/
+    │   ├── auth/
+    │   │   ├── login.dart
+    │   │   └── signup.dart
+    │   └── main_screen.dart
+    └── widgets/
+        ├── custom_button.dart
+        └── custom_text_field.dart
+```
+
+### Instructions
+
+1. **Design Authentication Forms**:
+   - Use reusable widgets for buttons and text fields.
+2. **Implement Navigation**:
+   - Set up routes between login, signup, and main screens.
+3. **Ensure Responsive Layouts**:
+   - Use `MediaQuery` and adaptive widgets to support different screen sizes.
+
+### Tests to Write
+
+- **Test**: UI components render correctly on all platforms.
+- **Result**: Forms and navigation bar display consistently on Android, iOS, and Web.
+- **Test**: Navigation flows work as intended.
+- **Result**: Users can move between login, signup, and main screens without issues.
+
+### Considerations
+
+- Maintain a consistent design language.
+- Optimize UI for touch and mouse inputs.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 9: Implement Basic Testing Framework
+
+### Key Requirements
+
+- Set up testing environment.
+- Write initial unit and widget tests.
+
+### Frameworks & Tools
+
+- **Flutter Test**
+- **Django Tests**
+
+### Folder/File Locations
+
+```bash
+client/
+└── test/
+    ├── auth_test.dart
+    ├── navigation_test.dart
+    └── widgets_test.dart
+modo_serverside/
+└── app1/
+    └── tests.py
+```
+
+### Instructions
+
+1. **Flutter Tests**:
+   - Write unit tests for services.
+   - Write widget tests for UI components.
+2. **Django Tests**:
+   - Write unit tests for models and views.
+   - Ensure API endpoints return expected responses.
+3. **Run Tests**:
+   - Use `flutter test` and `python manage.py test` to execute tests.
+
+### Tests to Write
+
+- **Flutter**:
+  - **Authentication Service**: Test sign up, log in, and log out methods.
+  - **Widget Rendering**: Ensure forms and navigation bar render correctly.
+- **Django**:
+  - **API Endpoints**: Test response status and data integrity.
+  - **Model Validations**: Ensure models enforce data constraints.
+
+### Result
+
+- All tests pass, ensuring foundational functionalities work as expected.
+
+### Considerations
+
+- Continuously add tests as new features are implemented.
+- Use mock data and dependencies to isolate tests.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 10: Set Up Version Control and CI/CD
+
+The user has already set up a GitHub repository for this project. Work with them to ensure that their Git environment matches the below requirements. Ask questions and verify that the user has completed each step.
+
+### Key Requirements
+
+- Initialize Git repository.
+- Configure Continuous Integration and Deployment pipelines.
+
+### Frameworks & Tools
+
+- **Git**
+- **GitHub/GitLab**
+- **CI/CD Tools** (e.g., GitHub Actions, GitLab CI)
+
+### Folder/File Locations
+
+- `.gitignore` in the root of both Flutter and Django projects.
+- CI/CD configuration files (e.g., `.github/workflows/ci.yml`).
+
+### Instructions
+
+1. **Initialize Git**:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   ```
+2. **Create Remote Repository**: Push to GitHub or GitLab.
+3. **Set Up `.gitignore`**:
+   - Exclude build files, environment variables, and sensitive data.
+4. **Configure CI/CD Pipelines**:
+   - Automate running tests on each commit.
+   - Optionally, set up deployments for Web and backend.
+
+### Tests to Write
+
+- **CI Pipeline**:
+  - Ensure tests run on each push and pull request.
+  - Validate build steps for all platforms.
+- **CD Pipeline**:
+  - Verify successful deployments to testing environments.
+
+### Result
+
+- Automated testing and deployment processes ensure code quality and streamline development.
+
+### Considerations
+
+- Protect branches (e.g., require passing tests before merging).
+- Securely manage environment variables and secrets.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
+---
+
+## Step 11: Finalize Minimum Viable Product (MVP)
+
+### Key Requirements
+
+- Ensure all basic functionalities are operational.
+- Prepare the app for initial deployment.
+
+### Frameworks & Tools
+
+- **Flutter**
+- **Supabase**
+- **Django**
+
+### Folder/File Locations
+
+- All previously mentioned directories and files.
+
+### Instructions
+
+1. **Review Functionality**:
+   - Confirm users can sign up, log in, log out.
+   - Ensure navigation bar and tabs work correctly.
+2. **Optimize Codebase**:
+   - Refactor code for readability and maintainability.
+   - Remove any unused code or dependencies.
+3. **Prepare for Deployment**:
+   - Configure platform-specific settings.
+   - Test on all target platforms (Android, iOS, Web).
+4. **Documentation**:
+   - Update README with setup instructions.
+   - Document key parts of the codebase.
+
+### Tests to Write
+
+- **End-to-End Tests**:
+  - Simulate user flows from sign up to navigation.
+- **Performance Tests**:
+  - Ensure the app performs smoothly on all platforms.
+
+### Result
+
+- A functional MVP that meets the core requirements and is ready for user testing or initial release.
+
+### Considerations
+
+- Gather feedback from initial users to identify areas for improvement.
+- Plan for iterative development based on user needs and feedback.
+- Do NOT step outside the specifications of this step without explicit user permission, except to document changes and rationale
+
