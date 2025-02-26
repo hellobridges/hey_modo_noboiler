@@ -1,0 +1,139 @@
+---
+description: Cursor rules format
+globs: *.mdc
+---
+---
+description: Cursor Rules Format
+globs: *.mdc
+---
+
+# Cursor Rules Format
+
+Guidelines for properly formatting Cursor rule files.
+
+<rule>
+name: cursor_rules_format
+description: Standards for formatting Cursor rule files with proper structure and content
+filters:
+  # Match any .mdc files
+  - type: file_extension
+    pattern: "\\.mdc$"
+  # Match files that look like Cursor rules
+  - type: content
+    pattern: "(?s)<rule>.*?</rule>"
+  # Match file creation and modification events
+  - type: event
+    pattern: "file_create|file_modify"
+
+actions:
+  - type: suggest
+    message: |
+      When formatting Cursor rules, follow these guidelines:
+
+      1. Description and globs
+      ```
+      ---
+      description: An extremely concise summary of the rule
+      globs: [relevant filetypes for the rule, e.g. *.json]
+      ---
+
+      1. Rule Header Structure:
+         ```
+         # Title of Rule (use sentence case)
+         
+         Brief description of the rule's purpose (1-2 sentences).
+         ```
+
+      2. Rule Tag Structure:
+         ```
+         <rule>
+         name: rule-name-in-kebab-case
+         description: Concise description of what the rule enforces
+         filters:
+           # Always include explanatory comments
+           - type: [filter_type]
+             pattern: "[regex_pattern]"
+           ...
+         
+         actions:
+           - type: [action_type]
+             [action_properties]
+             ...
+         
+         examples:
+           - input: |
+               # Example input
+             output: "Expected output"
+         
+         metadata:
+           priority: [low|medium|high]
+           version: [semantic_version]
+         </rule>
+         ```
+
+      3. Required Sections:
+         - `name`: Unique identifier in kebab-case
+         - `description`: Clear, concise purpose statement
+         - `filters`: At least one filter to determine when rule applies
+         - `actions`: At least one action to take when filters match
+
+      4. Optional But Recommended Sections:
+         - `examples`: Provide clear examples of rule application
+         - `metadata`: Include priority and version information
+
+      5. Content Guidelines:
+         - Use clear, specific language
+         - Include helpful comments for complex regex patterns
+         - Limit rule scope to a single concern
+         - Provide actionable feedback in messages
+         - Use proper indentation (2 spaces) for nested elements
+
+examples:
+  - input: |
+      # Bad: Missing sections and poor formatting
+      <rule>
+      name: my-rule
+      description: Does something
+      filters:
+        - type: file_extension
+          pattern: "\\.js$"
+      </rule>
+
+      # Good: Complete and well-formatted
+      # JavaScript Style Guide
+      
+      Enforces consistent JavaScript coding standards.
+      
+      <rule>
+      name: javascript-style-guide
+      description: Enforces consistent JavaScript coding standards
+      filters:
+        # Only apply to JavaScript files
+        - type: file_extension
+          pattern: "\\.js$"
+      
+      actions:
+        - type: suggest
+          message: |
+            Follow these JavaScript style guidelines:
+            - Use camelCase for variables and functions
+            - Use PascalCase for classes
+            - Use 2-space indentation
+      
+      examples:
+        - input: |
+            function badName() { 
+                return true;
+            }
+          output: "Use camelCase and 2-space indentation"
+      
+      metadata:
+        priority: medium
+        version: 1.0
+      </rule>
+    output: "Properly formatted Cursor rule"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

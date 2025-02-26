@@ -1,0 +1,65 @@
+---
+description: minimise-complexity
+globs: *.dart,*.py,*.js,*.ts,*.html,*.css
+---
+---
+description: Minimise complexity
+globs: *.dart,*.py,*.js,*.ts,*.html,*.css
+---
+
+# Code Quality Standards
+
+Rules to prevent AI overreach and maintain clean, elegant code.
+
+<rule>
+name: code_quality_standards
+description: Standards for maintaining code quality, preventing AI overreach, and ensuring proper technology stack usage
+
+filters:
+  # Match code files
+  - type: file_extension
+    pattern: "\\.(dart|py|js|ts|html|css)$"
+  # Match code modification events
+  - type: event
+    pattern: "file_modify|file_create"
+
+actions:
+  - type: suggest
+    message: |
+      # MInimise complexity
+
+      ## Technology Stack Adherence
+      - **Frontend**: Use Flutter exclusively for UI development
+      - **Backend**: Use Supabase for primary backend services and Django for additional backend functionalities
+      - **Avoid introducing new frameworks** unless absolutely necessary and approved by the user
+      - **Before suggesting a new technology**, verify it aligns with the existing stack
+
+      ## Code Reusability
+      - **Check for existing components** before creating new ones
+      - **Develop reusable components and services** to minimize code duplication
+      - **Generalize functionality** when appropriate to promote reuse
+      - **Before creating a new file**, verify similar functionality doesn't already exist
+
+      ## Frontend/Backend Separation
+      - **Carefully evaluate** whether functionality belongs on client or server side
+      - **Follow existing patterns** in the codebase for similar functionality
+      - **Ask clarifying questions** when the appropriate location is unclear
+      - **Consider performance implications** when deciding where to implement features
+
+      ## External Dependencies
+      - **Limit new dependencies** to those absolutely necessary
+      - **Evaluate impact** of new libraries before suggesting them
+      - **Prefer native solutions** when available
+      - **Consider maintenance burden** of external dependencies
+
+      ## Implementation Guidelines
+      - **Keep code DRY** (Don't Repeat Yourself)
+      - **Follow established patterns** in the existing codebase
+      - **Maintain consistent naming conventions**
+      - **Document complex logic** with clear comments
+      - **Implement proper error handling**
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

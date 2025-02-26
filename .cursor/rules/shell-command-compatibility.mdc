@@ -1,0 +1,80 @@
+---
+description: Use Powershell
+globs: *.ps1, *.sh, *.bat
+---
+ ---
+description: Shell Command Compatibility
+globs: *.ps1, *.sh, *.bat
+---
+
+# Shell Command Compatibility
+
+Guidelines for writing shell commands that work across different operating systems.
+
+<rule>
+name: shell-command-compatibility
+description: Ensures shell commands are compatible with the target operating system
+
+filters:
+  # Match terminal command execution
+  - type: event
+    pattern: "terminal_command"
+  # Match shell script files
+  - type: file_extension
+    pattern: "\\.(ps1|sh|bat)$"
+
+actions:
+  - type: suggest
+    message: |
+      # Shell Command Compatibility Guidelines
+
+      ## General Principles
+      - Detect the operating system before executing shell-specific commands
+      - Use platform-agnostic commands when possible
+      - Provide alternative commands for different shells
+
+      ## Directory Operations
+      - **Creating Directories**:
+        - Windows PowerShell: `mkdir Directory1, Directory2, Directory3`
+        - Unix/Bash: `mkdir -p directory1 directory2 directory3`
+        - For nested directories in PowerShell: Use individual commands or `New-Item -Path "path\to\dir" -ItemType Directory -Force`
+
+      ## Path Syntax
+      - Windows PowerShell: Use backslashes (`\`) or escaped forward slashes (`/`)
+      - Unix/Bash: Use forward slashes (`/`)
+      - For cross-platform scripts: Use platform detection to determine appropriate path separator
+
+      ## Command Execution
+      - Windows PowerShell: 
+        - Use `&` for executing commands with spaces
+        - Use `-ExecutionPolicy Bypass` when running scripts
+      - Unix/Bash:
+        - Use `./<script>` for executing scripts in current directory
+
+      ## Common Equivalents
+      | Operation | PowerShell | Bash |
+      |-----------|------------|------|
+      | List files | `Get-ChildItem` or `dir` | `ls` |
+      | Copy files | `Copy-Item` or `copy` | `cp` |
+      | Move files | `Move-Item` or `move` | `mv` |
+      | Delete files | `Remove-Item` or `del` | `rm` |
+      | Find text | `Select-String` | `grep` |
+      | Environment variables | `$env:VARIABLE` | `$VARIABLE` |
+
+examples:
+  - input: |
+      # Bad: Unix-specific command in PowerShell
+      mkdir -p lib/src/models lib/src/services
+      
+      # Good: PowerShell-compatible command
+      mkdir lib\src\models, lib\src\services
+      
+      # Alternative good approach (works in PowerShell)
+      New-Item -Path "lib\src\models" -ItemType Directory -Force
+      New-Item -Path "lib\src\services" -ItemType Directory -Force
+    output: "PowerShell-compatible directory creation commands"
+
+metadata:
+  priority: medium
+  version: 1.0
+</rule>

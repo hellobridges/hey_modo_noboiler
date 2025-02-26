@@ -1,0 +1,40 @@
+---
+description: Always mention what rule you follow
+globs: *.mdc
+---
+---
+description: Rule Mention Requirement
+globs: *
+---
+
+# Rule Mention Requirement
+
+Instructs AI to mention which rules it's following in its responses.
+
+<rule>
+name: mention-rule
+description: Requires AI to mention which rules it's following in its responses
+filters:
+  # Match any file
+  - type: path
+    pattern: ".*"
+  # Match any AI response
+  - type: event
+    pattern: "ai_response"
+
+actions:
+  - type: suggest
+    message: |
+      When following any Cursor rule, mention it at the beginning of your thinking with:
+      
+      "Following @rule-name.mdc."
+      
+      For multiple rules:
+      "Following @rule1.mdc, @rule2.mdc."
+      
+      Keep this mention extremely concise and don't exclude any other thinking.
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

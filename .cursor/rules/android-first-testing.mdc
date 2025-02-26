@@ -1,0 +1,75 @@
+---
+description: Test Android by default
+globs: *.dart, test/**
+---
+ ---
+description: Android-First Testing Approach
+globs: *.dart, test/**
+---
+
+# Android-First Testing Approach
+
+Guidelines for prioritizing Android testing in Flutter applications.
+
+<rule>
+name: android-first-testing
+description: Establishes Android as the default testing platform with error handling protocols
+
+filters:
+  # Match Flutter files
+  - type: file_extension
+    pattern: "\\.dart$"
+  # Match Flutter run commands
+  - type: content
+    pattern: "flutter run"
+
+actions:
+  - type: suggest
+    message: |
+      # Android-First Testing Guidelines
+
+      ## Default Testing Platform
+      - Use Android as the default platform for testing Flutter applications
+      - Run tests with: `flutter run -d android` or specify a specific Android device
+
+      ## Error Handling Protocol
+      - If Android environment is not available:
+        1. STOP testing immediately
+        2. Report to the user that Android environment is not available
+        3. Do not proceed with alternative platforms without user approval
+      
+      - If compilation errors occur:
+        1. STOP testing immediately
+        2. Report compilation errors to the user
+        3. Do not attempt to fix errors without understanding their root cause
+        4. Wait for user guidance before proceeding
+
+      ## Platform-Specific Testing
+      - Only test on iOS, web, or desktop when:
+        1. Explicitly requested by the user
+        2. Testing platform-specific features
+        3. Verifying cross-platform compatibility after Android testing is successful
+
+      ## Testing Verification
+      - Verify that the app launches successfully on Android
+      - Confirm that UI renders correctly on Android screen sizes
+      - Test core functionality on Android before other platforms
+      - Document any Android-specific issues encountered
+
+examples:
+  - input: |
+      # Bad: Testing on non-default platform without justification
+      flutter run -d chrome
+      
+      # Good: Android-first testing approach
+      # Test objective: Verify bottom navigation functionality on Android
+      flutter run -d android
+      
+      # If Android environment is not available:
+      # STOP and notify user: "Android environment not available. Please set up an Android emulator or connect a device."
+    output: "Android-first testing approach with proper error handling"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

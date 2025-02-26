@@ -1,0 +1,104 @@
+---
+description: Testing best practices
+globs: test/**
+---
+---
+description: Application Testing Strategy
+globs: test/**
+---
+
+# Application Testing Strategy
+
+Guidelines for implementing a structured approach to application testing.
+
+<rule>
+name: app-testing-strategy
+description: Defines a structured approach to testing applications with clear objectives and verification steps
+
+filters:
+  # Match test files
+  - type: file_extension
+    pattern: "\\.(test|spec)\\.(js|ts|dart|py)$"
+  # Match test-related content
+  - type: content
+    pattern: "(test|describe|it|expect|assert|should|verify)"
+  # Match app execution commands for testing
+  - type: content
+    pattern: "(flutter run|flutter test|npm test|pytest)"
+  # Match test directories
+  - type: path
+    pattern: ".*/test/.*"
+
+actions:
+  - type: suggest
+    message: |
+      # Application Testing Strategy
+
+      ## Before Running Tests
+      1. **Define Test Objectives**:
+         - Clearly state what functionality is being tested
+         - Define the scope of the test (unit, widget, integration, etc.)
+         - Identify expected outcomes
+
+      2. **Prepare Test Environment**:
+         - Ensure all dependencies are installed
+         - Set up any required test data or mocks
+         - Configure test parameters
+
+      ## Test Execution
+      1. **Automated Testing**:
+         - Prefer automated tests over manual verification
+         - Use appropriate testing frameworks (e.g., `flutter test` for Flutter)
+         - Run tests in a consistent environment
+
+      2. **Manual Testing**:
+         - Define specific steps to follow
+         - Document expected behavior at each step
+         - Specify how to verify success
+
+      3. **Running Applications for Testing**:
+         - Use appropriate flags for testing purposes (e.g., `--no-hot` for Flutter)
+         - Run in appropriate mode (debug, profile, release)
+         - Provide clear exit instructions
+
+      ## Test Verification
+      1. **Success Criteria**:
+         - Define measurable success criteria before testing
+         - Document actual vs. expected results
+         - Include screenshots or logs when relevant
+
+      2. **Error Handling**:
+         - Document any errors encountered
+         - Classify errors (critical, major, minor)
+         - Provide steps to reproduce errors
+
+      3. **Test Completion**:
+         - Properly terminate test applications
+         - Clean up test environment
+         - Document test results
+
+examples:
+  - input: |
+      # Bad: Unstructured test approach
+      flutter run -d chrome
+      
+      # Good: Structured test approach
+      # Test objective: Verify bottom navigation bar functionality
+      # Expected outcome: All four tabs should be accessible and display correct content
+      
+      # Run automated widget tests first
+      flutter test test/widget_test.dart
+      
+      # Manual verification on Chrome
+      flutter run -d chrome --no-hot
+      
+      # Verification steps:
+      # 1. Verify initial tab (Learn) loads correctly
+      # 2. Click on each navigation item and verify correct content displays
+      # 3. Exit the app with 'q' when testing is complete
+    output: "Structured application testing approach with clear objectives and verification steps"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>
