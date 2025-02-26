@@ -2,10 +2,11 @@
 description: Test Android by default
 globs: *.dart, test/**
 ---
- ---
-description: Android-First Testing Approach
+---
+description: Test Android by default
 globs: *.dart, test/**
 ---
+
 
 # Android-First Testing Approach
 

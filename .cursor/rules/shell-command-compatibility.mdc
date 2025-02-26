@@ -2,6 +2,10 @@
 description: Shell Command Compatibility
 globs: *.ps1, *.sh, *.bat
 ---
+---
+description: Shell Command Compatibility
+globs: *.ps1, *.sh, *.bat
+---
 
 # Shell Command Compatibility
 

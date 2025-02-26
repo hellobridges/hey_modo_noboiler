@@ -1,9 +1,9 @@
 ---
-description: Flutter best practices
+description: 
 globs: *.dart$, client/**
 ---
 ---
-description: Flutter, Dart, Riverpod, Supabase best practices
+description: Flutter best practices
 globs: *.dart$, client/**
 ---
 

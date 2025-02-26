@@ -1,9 +1,9 @@
 ---
-description: minimise-complexity
+description: Minimise complexity
 globs: *.dart,*.py,*.js,*.ts,*.html,*.css
 ---
 ---
-description: Minimise complexity
+description: minimise-complexity
 globs: *.dart,*.py,*.js,*.ts,*.html,*.css
 ---
 

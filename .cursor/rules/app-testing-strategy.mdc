@@ -2,6 +2,10 @@
 description: Application Testing Strategy
 globs: test/**
 ---
+---
+description: Application Testing Strategy
+globs: test/**
+---
 
 # Application Testing Strategy
 

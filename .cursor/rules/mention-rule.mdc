@@ -3,6 +3,10 @@ description: Always mention what rule you follow
 globs: *.mdc
 ---
 ---
+description: Always mention what rule you follow
+globs: *.mdc
+---
+---
 description: Rule Mention Requirement
 globs: *
 ---

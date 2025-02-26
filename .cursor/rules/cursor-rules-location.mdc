@@ -1,5 +1,9 @@
 ---
 description: Cursor rules location
+globs: .mdc
+---
+---
+description: Cursor rules location
 globs: *.mdc
 ---
 ---

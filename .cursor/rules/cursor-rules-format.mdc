@@ -1,11 +1,12 @@
 ---
 description: Cursor rules format
+globs: .mdc
+---
+---
+description: Cursor rules format
 globs: *.mdc
 ---
----
-description: Cursor Rules Format
-globs: *.mdc
----
+
 
 # Cursor Rules Format
 

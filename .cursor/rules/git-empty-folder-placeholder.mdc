@@ -1,5 +1,5 @@
 ---
-description: Git Empty Folder Placeholder
+description: Create Git Empty Folder Placeholder
 globs: (?i)(folder structure|directory structure|empty (folder|director)|create (folder|director))
 ---
 ---
