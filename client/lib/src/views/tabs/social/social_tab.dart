@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../widgets/user_settings_menu.dart';
+import 'leaderboard_widget.dart';
 
 /// The Social tab of the application.
 class SocialTab extends StatelessWidget {
@@ -9,19 +10,14 @@ class SocialTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Social'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: const [
           UserSettingsMenu(),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Social Tab Content',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      body: const LeaderboardWidget(),
     );
   }
 } 
